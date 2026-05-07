@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "../include/cli.h"
 
 
-void auth_login(const char *username) {}
-void auth_logout(void) {}
-void auth_register(const char *username) {}
 void file_upload(const char *filepath, int delete_original) {}
 void file_read(const char *doc_id) {}
 void file_share(const char *doc_id, const char *username,
@@ -35,17 +33,17 @@ void handle_auth(int argc, char *argv[]) {
             printf("Error: login requires a username. e.g. cadmus auth login dave\n");
             return;
         }
-        auth_login(argv[3]);
+        cmd_auth_login(argv[3]);
 
     } else if (strcmp(subcommand, "logout") == 0) {
-        auth_logout();
+        cmd_auth_logout();
 
     } else if (strcmp(subcommand, "register") == 0) {
         if (argc < 4) {
             printf("Error: register requires a username. e.g. cadmus auth register dave\n");
             return;
         }
-        auth_register(argv[3]);
+        cmd_auth_register(argv[3]);
 
     } else {
         printf("Error: unknown auth command '%s'\n", subcommand);

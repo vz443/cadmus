@@ -44,7 +44,8 @@ typedef enum CadmusError {
     CADMUS_ERR_INVALID_CREDENTIALS = 9,
     CADMUS_ERR_TAMPERED            = 10,
     CADMUS_ERR_ALLOC               = 11,
-    CADMUS_ERR_OVERFLOW            = 12
+    CADMUS_ERR_OVERFLOW            = 12,
+    CADMUS_ERR_USER_NOT_FOUND      = 13
 } CadmusError;
 
 #endif /* CADMUS_TYPES_H */
