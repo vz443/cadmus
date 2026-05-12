@@ -1,7 +1,6 @@
 #ifndef CADMUS_CRYPTO_H
 #define CADMUS_CRYPTO_H
 
-/* Simple educational encryption and checksum helpers. */
 
 #include "types.h"
 
