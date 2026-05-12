@@ -1,66 +1,46 @@
 #ifndef CADMUS_CRYPTO_H
 #define CADMUS_CRYPTO_H
 
-/* Assigned to: Varen */
 
 #include "types.h"
 
-typedef struct {
-    cadmus_u32 state[8];
-    cadmus_u8  buf[64];
-    cadmus_u32 bits_lo;
-    cadmus_u32 bits_hi;
-    cadmus_u32 buf_len;
-} Sha256Ctx;
+/* Mix arbitrary bytes into a fixed-length key buffer. */
+void crypto_mix_bytes(const cadmus_u8 *seed,
+                      cadmus_u32 seed_len,
+                      cadmus_u8 key_out[CADMUS_KEY_LEN]);
 
-/* Varen */
-void chacha20_block(const cadmus_u8 key[CADMUS_KEY_LEN],
-                    const cadmus_u8 nonce[CADMUS_NONCE_LEN],
-                    cadmus_u32 counter,
-                    cadmus_u8 out[64]);
+/* Derive a document key from a session key and document id. */
+void crypto_derive_doc_key(const cadmus_u8 session_key[CADMUS_KEY_LEN],
+                           const cadmus_u8 doc_id[CADMUS_DOC_ID_LEN],
+                           cadmus_u8 doc_key_out[CADMUS_KEY_LEN]);
 
-/* Varen */
-void chacha20_xor(const cadmus_u8 *key,
-                  const cadmus_u8 *nonce,
-                  cadmus_u32 counter,
-                  const cadmus_u8 *in,
-                  cadmus_u8 *out,
-                  cadmus_u32 len);
+/* Encrypt or decrypt bytes with a simple XOR stream. */
+void crypto_xor_stream(const cadmus_u8 key[CADMUS_KEY_LEN],
+                       const cadmus_u8 doc_id[CADMUS_DOC_ID_LEN],
+                       const cadmus_u8 *in,
+                       cadmus_u8 *out,
+                       cadmus_u32 len);
 
-/* Varen */
-void sha256_init(Sha256Ctx *ctx);
+/* Compute a simple rolling checksum. */
+cadmus_u32 crypto_checksum32(const cadmus_u8 *data, cadmus_u32 len);
 
-/* Varen */
-void sha256_update(Sha256Ctx *ctx, const cadmus_u8 *data, cadmus_u32 len);
+/* Compute a key-dependent checksum. */
+cadmus_u32 crypto_keyed_checksum32(const cadmus_u8 key[CADMUS_KEY_LEN],
+                                   const cadmus_u8 *data,
+                                   cadmus_u32 len);
 
-/* Varen */
-void sha256_final(Sha256Ctx *ctx, cadmus_u8 hash[CADMUS_SHA256_LEN]);
+/* Build a binary document id from a sequential number. */
+void crypto_make_doc_id(cadmus_u32 value, cadmus_u8 doc_id[CADMUS_DOC_ID_LEN]);
 
-/* Varen */
-void sha256(const cadmus_u8 *data, cadmus_u32 len,
-            cadmus_u8 hash[CADMUS_SHA256_LEN]);
+/* Convert a binary document id to an 8-digit hex string. */
+void crypto_doc_id_to_str(const cadmus_u8 doc_id[CADMUS_DOC_ID_LEN],
+                          char str[CADMUS_DOC_ID_STR_LEN]);
 
-/* Varen */
-void hmac_sha256(const cadmus_u8 *key, cadmus_u32 key_len,
-                 const cadmus_u8 *msg, cadmus_u32 msg_len,
-                 cadmus_u8 mac_out[CADMUS_HMAC_LEN]);
+/* Parse an 8-digit hex string into a binary document id. */
+CadmusError crypto_doc_id_from_str(const char *str,
+                                   cadmus_u8 doc_id[CADMUS_DOC_ID_LEN]);
 
-/* Varen returns 1 if valid, 0 if not */
-int hmac_sha256_verify(const cadmus_u8 *key, cadmus_u32 key_len,
-                       const cadmus_u8 *msg, cadmus_u32 msg_len,
-                       const cadmus_u8 expected[CADMUS_HMAC_LEN]);
-
-/* Varen */
-void crypto_gen_nonce(cadmus_u8 nonce[CADMUS_NONCE_LEN]);
-
-/* Varen */
-void crypto_gen_uuid(cadmus_u8 uuid[CADMUS_DOC_ID_LEN]);
-
-/* Varen */
-void crypto_uuid_to_str(const cadmus_u8 uuid[CADMUS_DOC_ID_LEN],
-                        char str[CADMUS_DOC_ID_STR_LEN]);
-
-/* Varen */
+/* Zero sensitive memory in a way that resists optimization. */
 void crypto_secure_zero(void *buf, cadmus_u32 len);
 
 #endif /* CADMUS_CRYPTO_H */
