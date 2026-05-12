@@ -1,13 +1,17 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -pedantic -Iinclude
 TARGET = cadmus
-SRC = src/cadmus.c
+SRC = $(wildcard src/*.c)
+OBJ = $(SRC:.c=.o)
 HEADERS = include/*.h
 
 all: $(TARGET)
 
-$(TARGET): $(SRC) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
+
+src/%.o: src/%.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(OBJ)

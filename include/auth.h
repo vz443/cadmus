@@ -4,27 +4,25 @@
 /*
  * User authentication and registry.
  *
- * Registry file: $HOME/.cadmus/users
- * Format: one line per user -> "username:sha256hex\n"
- *
- * Assigned to: Le Vinh
+ * Registry file: cadmus_users.txt
+ * Format: one line per user -> "username:passwordhash\n"
  */
 
 #include "types.h"
 
-/* Le Vinh */
+/* Register a new user in the local credential registry. */
 CadmusError auth_register(const char *username, const char *password);
 
-/* Le Vinh */
+/* Verify credentials and create a local session. */
 CadmusError auth_login(const char *username, const char *password);
 
-/* Le Vinh */
+/* Clear the active local session. */
 CadmusError auth_logout(void);
 
-/* Le Vinh writes current username into out (CADMUS_USERNAME_MAX bytes) */
+/* Write the current username into out (CADMUS_USERNAME_MAX bytes). */
 CadmusError auth_whoami(char out[CADMUS_USERNAME_MAX]);
 
-/* Le Vinh returns 1 if user exists, 0 otherwise */
+/* Return 1 if the user exists, 0 otherwise. */
 int auth_user_exists(const char *username);
 
 #endif /* CADMUS_AUTH_H */

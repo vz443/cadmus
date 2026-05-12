@@ -8,17 +8,14 @@ typedef unsigned int   cadmus_u32;
 #define CADMUS_USERNAME_MAX   64
 #define CADMUS_FILENAME_MAX   256
 #define CADMUS_KEY_LEN        32
-#define CADMUS_SHA256_LEN     32
-#define CADMUS_HMAC_LEN       32
-#define CADMUS_NONCE_LEN      12
-#define CADMUS_DOC_ID_LEN     16
-#define CADMUS_DOC_ID_STR_LEN 37
+#define CADMUS_DOC_ID_LEN     4
+#define CADMUS_DOC_ID_STR_LEN 9
 #define CADMUS_MAX_ACL        32
 #define CADMUS_PATH_MAX       512
 
-#define CADMUS_ACL_ENTRY_SIZE   133
-#define EDOC_HEADER_SIGNED_SIZE 4658
-#define EDOC_HEADER_SIZE        4690
+#define CADMUS_ACL_ENTRY_SIZE   161
+#define EDOC_HEADER_SIGNED_SIZE 5503
+#define EDOC_HEADER_SIZE        5503
 
 #define CADMUS_PERM_READ   0x01u
 #define CADMUS_PERM_WRITE  0x02u
@@ -26,10 +23,13 @@ typedef unsigned int   cadmus_u32;
 #define CADMUS_PERM_DELETE 0x08u
 #define CADMUS_PERM_ALL    0x0Fu
 
-#define CADMUS_DIR_NAME     ".cadmus"
-#define CADMUS_STORE_DIR    "store"
-#define CADMUS_SESSION_FILE "session-key"
-#define CADMUS_USERS_FILE   "users"
+#define CADMUS_COMPRESS_NONE 0u
+#define CADMUS_COMPRESS_RLE  1u
+
+#define CADMUS_SESSION_FILE "cadmus_session.bin"
+#define CADMUS_USERS_FILE   "cadmus_users.txt"
+#define CADMUS_INDEX_FILE   "cadmus_index.txt"
+#define CADMUS_DOC_PREFIX   "cadmus_doc"
 
 typedef enum CadmusError {
     CADMUS_OK                      = 0,
